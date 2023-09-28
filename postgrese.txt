@@ -1,0 +1,134 @@
+Fetch all columns from the country table:
+
+SELECT *
+FROM country;
+Fetch id and name columns from the city table:
+
+SELECT id, name
+FROM city;
+Fetch city names sorted by the rating column in the default ASCending order:
+
+SELECT name
+FROM city
+ORDER BY rating [ASC];
+Fetch city names sorted by the rating column in the DESCending order:
+
+SELECT name
+FROM city
+ORDER BY rating DESC;
+ALIASES
+COLUMNS
+SELECT name AS city_name
+FROM city;
+TABLES
+SELECT co.name, ci.name
+FROM city AS ci
+JOIN country AS co
+  ON ci.country_id = co.id;
+
+
+ALIASES
+COLUMNS
+SELECT name AS city_name
+FROM city;
+TABLES
+SELECT co.name, ci.name
+FROM city AS ci
+JOIN country AS co
+  ON ci.country_id = co.id;
+
+
+Fetch names of cities that don't miss a rating value:
+SELECT name
+FROM city
+WHERE rating IS NOT NULL;
+Fetch names of cities that are in countries with IDs 1, 4, 7, or 8:
+SELECT name
+FROM city
+WHERE country_id IN (1, 4, 7, 8);
+
+
+
+INNER JOIN
+JOIN (or explicitly INNER JOIN) returns rows that have matching values in both tables.
+
+SELECT city.name, country.name
+FROM city
+[INNER] JOIN country
+  ON city.country_id = country.id;
+
+
+LEFT JOIN
+LEFT JOIN returns all rows from the left table with corresponding rows from the right table. If there's no matching row, NULLs are returned as values from the second table.
+
+SELECT city.name, country.name
+FROM city
+LEFT JOIN country
+  ON city.country_id = country.id;
+
+
+RIGHT JOIN
+RIGHT JOIN returns all rows from the right table with corresponding rows from the left table. If there's no matching row, NULLs are returned as values from the left table.
+
+SELECT city.name, country.name
+FROM city
+RIGHT JOIN country
+  ON city.country_id = country.id;
+
+
+FULL JOIN
+FULL JOIN (or explicitly FULL OUTER JOIN) returns all rows from both tables – if there's no matching row in the second table, NULLs are returned.
+
+SELECT city.name, country.name
+FROM city
+FULL [OUTER] JOIN country
+  ON city.country_id = country.id;
+
+
+CROSS JOIN
+CROSS JOIN returns all possible combinations of rows from both tables. There are two syntaxes available.
+
+SELECT city.name, country.name
+FROM city
+CROSS JOIN country;
+
+SELECT city.name, country.name
+FROM city, country;
+
+
+
+NATURAL JOIN
+NATURAL JOIN will join tables by all columns with the same name.
+
+SELECT city.name, country.name
+FROM city
+NATURAL JOIN country;
+
+
+Find out the number of cities:
+
+SELECT COUNT(*)
+FROM city;
+Find out the number of cities with non-null ratings:
+
+SELECT COUNT(rating)
+FROM city;
+Find out the number of distinctive country values:
+
+SELECT COUNT(DISTINCT country_id)
+FROM city;
+Find out the smallest and the greatest country populations:
+
+SELECT MIN(population), MAX(population)
+FROM country;
+Find out the total population of cities in respective countries:
+
+SELECT country_id, SUM(population)
+FROM city
+GROUP BY country_id;
+Find out the average rating for cities in respective countries if the average is above 3.0:
+
+SELECT country_id, AVG(rating)
+FROM city
+GROUP BY country_id
+HAVING AVG(rating) > 3.0;
